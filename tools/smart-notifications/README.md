@@ -43,7 +43,7 @@ curl -fsSL https://raw.githubusercontent.com/pfallonjensen/claude-code-tools/mai
 
 From within any Claude Code session:
 ```
-/name-session
+/session-name
 ```
 
 Then provide a name like "trading analysis" or "DDS sprint work".
@@ -52,18 +52,22 @@ Then provide a name like "trading analysis" or "DDS sprint work".
 - Before: "Claude Code needs your attention"
 - After: "Trading analysis — Waiting for input"
 
+**Pro tip:** Type `/session-` and both session tools appear in autocomplete.
+
 ### Control Audio
 
-**Toggle mute/unmute:**
-```bash
-claude-mute
+**From within Claude Code:**
+```
+/session-audio          # Check status (interactive override)
+/session-audio on       # Mute
+/session-audio off      # Unmute
+/session-audio toggle   # Switch
 ```
 
-**Explicit control:**
+**From terminal:**
 ```bash
-claude-mute on      # Mute
-claude-mute off     # Unmute
-claude-mute status  # Check state
+claude-mute            # Same options as above
+claude-mute status     # Check state
 ```
 
 **Example status output:**
@@ -129,7 +133,7 @@ If mic shows "IN USE", you're in a meeting or recording. If "FREE", check `~/.cl
 
 Check if session is labeled:
 ```
-/name-session
+/session-name
 ```
 
 If unlabeled, it will say "Session 322fe521" (truncated ID).
@@ -167,9 +171,13 @@ Removes all files except session labels (prompts before deleting).
    - Creates/removes `~/.claude-quiet` file
    - Shows combined manual + mic status
 
-4. **name-session skill** — Session labeling
+4. **session-name skill** — Session labeling
    - Auto-detects session ID from JSONL files
    - Writes to `~/.claude/session-labels/{uuid}`
+
+5. **session-audio skill** — Audio control from within Claude Code
+   - Wraps claude-mute.sh command
+   - Works from any session (global setting)
 
 **Session name resolution priority:**
 1. Session labels (`~/.claude/session-labels/{uuid}`)

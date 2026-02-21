@@ -1,10 +1,10 @@
 ---
-name: claude-mute
+name: session-audio
 description: Control audio notifications globally (mute/unmute/status/override) from within Claude Code
 user_invocable: true
 ---
 
-# Claude Mute - Audio Control
+# Session Audio Control
 
 Control Claude Code audio notifications from within any session.
 
@@ -13,10 +13,10 @@ Control Claude Code audio notifications from within any session.
 Parse the argument and execute the corresponding mode:
 
 ### Usage:
-- `/claude-mute` or `/claude-mute status` — show current state (interactive override if applicable)
-- `/claude-mute on` — mute audio globally
-- `/claude-mute off` — unmute audio globally (clears override too)
-- `/claude-mute toggle` — switch between muted/unmuted
+- `/session-audio` or `/session-audio status` — show current state (interactive override if applicable)
+- `/session-audio on` — mute audio globally
+- `/session-audio off` — unmute audio globally (clears override too)
+- `/session-audio toggle` — switch between muted/unmuted
 
 ### Implementation:
 
@@ -30,19 +30,19 @@ $HOME/.claude/commands/claude-mute.sh ${ARG:-status}
 
 ### Examples:
 
-**User: `/claude-mute`**
+**User: `/session-audio`**
 → Run: `$HOME/.claude/commands/claude-mute.sh status`
 → If interactive prompt appears, let user respond
 
-**User: `/claude-mute on`**
+**User: `/session-audio on`**
 → Run: `$HOME/.claude/commands/claude-mute.sh on`
 → Show confirmation message
 
-**User: `/claude-mute off`**
+**User: `/session-audio off`**
 → Run: `$HOME/.claude/commands/claude-mute.sh off`
 → Show confirmation message
 
-**User: `/claude-mute toggle`**
+**User: `/session-audio toggle`**
 → Run: `$HOME/.claude/commands/claude-mute.sh toggle`
 → Show confirmation message
 

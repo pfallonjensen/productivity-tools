@@ -1,24 +1,24 @@
 ---
-name: name-session
+name: session-name
 description: Label the current session for audio notifications — you'll hear this name when the session needs attention
 user_invocable: true
 ---
 
-# Name Session
+# Session Name
 
 Label this session so audio notifications say its name instead of a generic ID.
 
 ## Instructions
 
 ### Usage:
-- `/name-session` — check current label (if no args provided)
-- `/name-session <name>` — set label to `<name>`
+- `/session-name` — check current label (if no args provided)
+- `/session-name <name>` — set label to `<name>`
 
 ### Steps:
 
 1. **Find this session's ID:**
    ```bash
-   grep -l "name-session" ~/.claude/projects/-Users-fallonjensen-Obsidian-Vault/*.jsonl 2>/dev/null | xargs ls -t | head -1
+   grep -l "session-name" ~/.claude/projects/-Users-fallonjensen-Obsidian-Vault/*.jsonl 2>/dev/null | xargs ls -t | head -1
    ```
    Extract the UUID from the filename (everything between the last `/` and `.jsonl`).
 
