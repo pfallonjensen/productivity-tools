@@ -57,6 +57,20 @@ Automatic Git backup system for Obsidian vaults.
 
 ---
 
+### 📋 Action Item Extractor
+
+Semantic extraction of action items from meetings and Slack using high-leverage filtering.
+
+**What it does:**
+- Extracts action items from meeting transcripts and Slack threads
+- VP/PM hybrid theme filtering (only high-leverage work)
+- Smart reply detection (skips threads where you already responded)
+- Outputs to Obsidian task dashboard
+
+**[Documentation →](action-item-extractor/README.md)**
+
+---
+
 ## Installation
 
 Each tool has its own installation method. See tool-specific documentation for details.

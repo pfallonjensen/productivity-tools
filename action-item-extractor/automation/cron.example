@@ -1,0 +1,6 @@
+# Action Item Extractor — Cron Schedule
+#
+# Add these lines to your crontab (crontab -e):
+#
+# Run extraction at 6am, 11am, 3pm, 6pm daily
+0 6,11,15,18 * * * /PATH/TO/action-item-extractor/automation/run.sh >> /PATH/TO/action-item-extractor/extract-tasks.log 2>&1

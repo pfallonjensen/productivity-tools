@@ -1,0 +1,79 @@
+# ============================================
+# TIM KRUG — Config Template
+# ============================================
+# Copy to config.yaml and fill in your values.
+# This file is committed as an example; config.yaml is .gitignore'd.
+# ============================================
+
+sources:
+  slack:
+    enabled: true
+    type: slack
+    token: "xoxp-YOUR-SLACK-TOKEN"  # Get from Slack App settings
+    workspace: "daybreakers"
+    user_id: "UXXXXXXXXXX"  # Your Slack member ID
+    lookback_hours: 24
+
+  meetings:
+    enabled: true
+    type: local_files
+    path: "/path/to/your/meeting/transcripts"
+    file_patterns: ["*.txt", "*.md"]
+    lookback_hours: 48
+
+  # Google Sheets — Pipeline tracker
+  pipeline_tracker:
+    enabled: false  # Enable after Google OAuth setup
+    type: google_sheets
+    spreadsheet_id: "YOUR_SPREADSHEET_ID"  # Get from the sheet URL
+    sheet_name: "Pipeline"
+    content_columns: ["A", "B", "C", "D"]
+    author_column: "E"
+    timestamp_column: "F"
+    lookback_hours: 168  # 1 week
+
+  # Google Docs — ELT memo
+  elt_memo:
+    enabled: false  # Enable after Google OAuth setup
+    type: google_docs
+    document_id: "YOUR_DOCUMENT_ID"  # Get from the doc URL
+    tab: "latest"
+    lookback_hours: 168
+    section_delimiter: "---"
+
+  email:
+    enabled: false  # Enable after Google OAuth setup
+    type: email
+    provider: gmail
+    labels: ["INBOX"]
+    lookback_hours: 24
+    max_results: 100
+
+# Google API auth (shared across Google sources)
+google:
+  credentials_path: "~/.config/action-item-extractor/google-credentials.json"
+  client_id: "YOUR_GOOGLE_CLIENT_ID"
+  client_secret: "YOUR_GOOGLE_CLIENT_SECRET"
+  scopes:
+    - "https://www.googleapis.com/auth/gmail.readonly"
+    - "https://www.googleapis.com/auth/spreadsheets.readonly"
+    - "https://www.googleapis.com/auth/documents.readonly"
+
+output:
+  type: obsidian
+  path: "/path/to/your/obsidian/vault"
+  action_items_path: "Action Items"
+  preserve_manual_priorities: true
+  carry_forward_incomplete: true
+  past_due_tracking: true
+
+ai:
+  triage_mode: "claude_code"   # claude_code | api | none
+  # api_key: "sk-ant-..."     # Only needed if triage_mode: "api"
+  # model: "claude-sonnet-4-5-20250929"
+  confidence_threshold: 0.7
+
+schedule:
+  times: ["06:00", "11:00", "15:00", "18:00"]
+  log_file: "extract-tasks.log"
+  max_log_size_mb: 10

@@ -1,0 +1,139 @@
+# ============================================
+# EXAMPLE: Engineering Manager
+# ============================================
+# An EM focused on team health, deployment safety,
+# incident response, and code review. Uses "all"
+# extraction for their team's project because they
+# need visibility into everything that affects delivery.
+# ============================================
+
+identity:
+  name: "Alex Chen"
+  aliases: ["Alex", "AC", "alex.chen"]
+  slack_user_id: "U04EXAMPLE2"
+  role: "Engineering Manager"
+
+projects:
+  payments-service:
+    name: "Payments Service"
+    my_role: "I manage the team that builds and operates this"
+    extract_level: all
+    detect_keywords: ["payments", "billing", "checkout", "payment service"]
+    channels: ["C04PAY-ENG", "C04PAY-ONCALL", "C04PAY-DEPLOYS"]
+
+  platform-infra:
+    name: "Platform Infrastructure"
+    my_role: "Consumer — my team depends on it but I don't own it"
+    extract_level: strategic_only
+    detect_keywords: ["platform", "infra", "k8s", "kubernetes"]
+    channels: ["C04PLATFORM"]
+
+priority_contacts:
+  - username: "vp.engineering"
+    reason: "VP Eng - my manager, always extract"
+  - username: "director.product"
+    reason: "Product director - cross-functional partner"
+  - username: "oncall.lead"
+    reason: "On-call lead - incident escalations"
+
+themes:
+  incidents:
+    priority: critical
+    description: "Production incidents, outages, degraded service"
+    keywords:
+      - "incident"
+      - "outage"
+      - "P0"
+      - "P1"
+      - "pages"
+      - "pagerduty"
+      - "downtime"
+      - "degraded"
+      - "SEV1"
+      - "SEV2"
+      - "rollback"
+
+  blocking:
+    priority: critical
+    description: "Team blocked on decisions, approvals, or dependencies"
+    keywords:
+      - "blocked"
+      - "can't proceed"
+      - "need decision"
+      - "waiting on"
+      - "blocker"
+      - "need approval"
+
+  deployment:
+    priority: high
+    description: "Releases, deployments, feature flags"
+    keywords:
+      - "deploy"
+      - "release"
+      - "feature flag"
+      - "rollout"
+      - "canary"
+      - "hotfix"
+      - "cherry-pick"
+      - "release train"
+
+  team_health:
+    priority: high
+    description: "1:1s, performance, hiring, team morale"
+    keywords:
+      - "1:1"
+      - "performance review"
+      - "hiring"
+      - "interview"
+      - "onboarding"
+      - "burnout"
+      - "capacity"
+      - "PTO"
+      - "headcount"
+
+  code_review:
+    priority: medium
+    description: "PRs needing EM review, architecture decisions"
+    keywords:
+      - "review"
+      - "PR"
+      - "pull request"
+      - "RFC"
+      - "architecture decision"
+      - "ADR"
+      - "tech debt"
+      - "design doc"
+
+  coordination:
+    priority: medium
+    description: "Cross-team sync, dependency management"
+    keywords:
+      - "sync"
+      - "align"
+      - "coordinate"
+      - "handoff"
+      - "dependency"
+      - "standup"
+      - "retro"
+      - "sprint"
+
+  awareness:
+    priority: low
+    description: "FYI items, status updates, general announcements"
+    keywords:
+      - "fyi"
+      - "update"
+      - "status"
+      - "heads up"
+      - "announcement"
+
+skip_keywords:
+  - "typo"
+  - "color change"
+  - "spacing"
+  - "alignment"
+  - "formatting"
+
+ticket_detection:
+  enabled: true
+  pattern: '[A-Z]{2,5}-\d{1,5}'

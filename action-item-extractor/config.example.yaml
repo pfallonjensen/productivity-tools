@@ -1,0 +1,111 @@
+# ============================================
+# SOURCES — where to scan for action items
+# ============================================
+sources:
+  slack:
+    enabled: true
+    type: slack
+    token: "xoxp-YOUR-TOKEN"
+    workspace: "YOUR-WORKSPACE"
+    lookback_hours: 24
+
+  meetings:
+    enabled: true
+    type: local_files
+    path: "/path/to/meeting/transcripts"
+    file_patterns: ["*.txt", "*.md"]
+    lookback_hours: 48
+
+  jira:
+    enabled: false
+    type: jira
+    cloud_id: "YOUR_CLOUD_ID"
+    site: "YOUR_SITE"              # The subdomain from YOUR_SITE.atlassian.net
+    token: "YOUR_JIRA_TOKEN"       # Atlassian API token (id.atlassian.com/manage-profile/security/api-tokens)
+    email: "your.email@company.com"
+    lookback_days: 7
+    projects: ["PROJ"]
+
+  confluence:
+    enabled: false
+    type: confluence
+    cloud_id: "YOUR_CLOUD_ID"
+    token: "YOUR_CONFLUENCE_TOKEN"
+    lookback_days: 7
+
+  email:
+    enabled: false
+    type: email
+    provider: gmail
+    labels: ["INBOX"]           # Which Gmail labels to scan
+    lookback_hours: 24
+    max_results: 100
+
+  # Google Sheets — read rows from a spreadsheet
+  pipeline_tracker:
+    enabled: false
+    type: google_sheets
+    spreadsheet_id: "YOUR_SPREADSHEET_ID"   # From the sheet URL
+    sheet_name: "Sheet1"                     # Sheet tab name
+    content_columns: ["A", "B", "C", "D"]   # Columns to concatenate as content
+    author_column: "E"                       # Optional: who added the row
+    timestamp_column: "F"                    # Optional: when it was added
+    lookback_hours: 168                      # 1 week for sheets
+
+  # Google Docs — read document content
+  shared_doc:
+    enabled: false
+    type: google_docs
+    document_id: "YOUR_DOCUMENT_ID"          # From the doc URL
+    tab: "latest"                            # "latest" or specific tab name
+    lookback_hours: 168
+    section_delimiter: "---"                 # Split content on this delimiter
+
+# ============================================
+# GOOGLE API AUTH (shared across Google sources)
+# ============================================
+# Required for: email (Gmail), google_sheets, google_docs
+# First run: opens browser for OAuth consent
+# Subsequent runs: uses stored refresh token
+google:
+  credentials_path: "~/.config/action-item-extractor/google-credentials.json"
+  client_id: "YOUR_GOOGLE_CLIENT_ID"
+  client_secret: "YOUR_GOOGLE_CLIENT_SECRET"
+  scopes:
+    - "https://www.googleapis.com/auth/gmail.readonly"
+    - "https://www.googleapis.com/auth/spreadsheets.readonly"
+    - "https://www.googleapis.com/auth/documents.readonly"
+
+# ============================================
+# OUTPUT — where to write extracted tasks
+# ============================================
+output:
+  type: obsidian          # obsidian | markdown | csv
+  path: "/path/to/vault"
+  action_items_path: "Action Items"
+  preserve_manual_priorities: true
+  carry_forward_incomplete: true
+  past_due_tracking: true
+
+# ============================================
+# AI PROCESSING
+# ============================================
+ai:
+  # triage_mode controls how AI processing works:
+  #   claude_code = Claude Code CLI with Teams auth ($0 extra cost)
+  #   api = Anthropic API (requires api_key, separate billing)
+  #   none = keyword-only, no AI triage
+  triage_mode: "claude_code"
+
+  # Only needed if triage_mode: "api"
+  # api_key: "YOUR_ANTHROPIC_API_KEY"
+  # model: "claude-sonnet-4-5-20250929"
+  confidence_threshold: 0.7
+
+# ============================================
+# SCHEDULING
+# ============================================
+schedule:
+  times: ["06:00", "11:00", "15:00", "18:00"]
+  log_file: "extract-tasks.log"
+  max_log_size_mb: 10

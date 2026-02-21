@@ -1,0 +1,296 @@
+# ============================================
+# CEO / FOUNDER — Example Persona
+# ============================================
+# This is an example persona for a startup CEO.
+# Copy to persona.yaml and fill in your actual values.
+#
+# Based on a real CEO workflow: sales-heavy, investor-facing,
+# strategic oversight of product and engineering.
+# ============================================
+
+identity:
+  name: "Your Name"
+  aliases: ["FirstName", "Initials", "slack.username"]
+  slack_user_id: "UXXXXXXXXXX"     # Your Slack member ID
+  email: "you@company.com"
+  role: "CEO / Founder"
+
+# ============================================
+# YOUR PROJECTS
+# ============================================
+# extract_level controls how aggressively items are surfaced:
+#   strategic_only = only critical/high themes (recommended for CEO)
+#   all = extract everything relevant
+#   awareness_only = flag but don't create tasks
+# ============================================
+projects:
+  # --- Your main product ---
+  main-product:
+    name: "Main Product"
+    my_role: "Founder — VP Product runs product, I drive GTM and customer conversations"
+    extract_level: strategic_only
+    detect_keywords:
+      - "product name"
+      - "core feature"
+      - "demand planning"
+      - "forecast"
+    channels:
+      - "CXXXXXXXXXX"   # #product-delivery
+      - "CXXXXXXXXXX"   # #product-general
+
+  # --- A sub-initiative or internal tool ---
+  internal-tool:
+    name: "Internal Tool / Framework"
+    my_role: "I approve briefs and show demos to prospects"
+    extract_level: strategic_only
+    detect_keywords:
+      - "tool name"
+      - "demo"
+      - "prototype"
+      - "brief"
+    channels:
+      - "CXXXXXXXXXX"   # #tool-channel
+
+  # --- Professional services / delivery arm ---
+  enterprise-services:
+    name: "Enterprise Services"
+    my_role: "Scaling delivery — Ops Lead runs operations, I own model and margins"
+    extract_level: strategic_only
+    detect_keywords:
+      - "enterprise services"
+      - "implementation"
+      - "delivery"
+      - "partner"
+    channels:
+      - "CXXXXXXXXXX"   # #customer-channel
+
+  # --- Sales (CEO is often the primary seller at early stage) ---
+  sales-gtm:
+    name: "Sales & GTM"
+    my_role: "I am the primary salesperson — I find leads, close deals, deliver pipeline, and grow ARR"
+    extract_level: all  # CEO is hands-on here, extract everything
+    detect_keywords:
+      - "sales"
+      - "pipeline"
+      - "deal"
+      - "prospect"
+      - "pricing"
+      - "GTM"
+      - "go-to-market"
+      - "pilot"
+      - "early adopter"
+      - "demo"
+      - "proposal"
+      - "contract"
+      - "close"
+      - "lead"
+      - "outreach"
+      - "qualification"
+      - "discovery call"
+    channels: []  # CEO often uses DMs for deals — add channels if applicable
+
+  # --- Fundraising (if applicable) ---
+  fundraising:
+    name: "Capital Raise & Board"
+    my_role: "I own investor relationships, board prep, and fundraising"
+    extract_level: all
+    detect_keywords:
+      - "fundraise"
+      - "raise"
+      - "investor"
+      - "board"
+      - "term sheet"
+      - "cap table"
+      - "runway"
+      - "burn"
+      - "due diligence"
+    channels: []  # Likely DMs and external — no dedicated Slack channel
+
+  # --- Company-wide / org ---
+  company-wide:
+    name: "Company Operations"
+    my_role: "CEO — culture, hiring, org design"
+    extract_level: strategic_only
+    detect_keywords:
+      - "all-hands"
+      - "company"
+      - "org"
+      - "culture"
+      - "hiring"
+      - "headcount"
+    channels:
+      - "CXXXXXXXXXX"   # #executive-leadership
+      - "CXXXXXXXXXX"   # #product-leadership
+      - "CXXXXXXXXXX"   # #product-engineering
+
+# ============================================
+# PEOPLE WHOSE MESSAGES ALWAYS GET EXTRACTED
+# ============================================
+# Replace usernames with their actual Slack usernames
+# (the part after @ when you mention them in Slack)
+priority_contacts:
+  - username: "vp.product"
+    reason: "VP Product — product strategy, product decisions"
+  - username: "vp.engineering"
+    reason: "VP Engineering — technical escalations, delivery blockers"
+  - username: "services.lead"
+    reason: "Services Lead — customer implementations, delivery risk"
+  - username: "sales.lead"
+    reason: "GTM / Sales — pipeline, deals, outreach"
+  - username: "cfo"
+    reason: "CFO — runway, burn, financial decisions"
+  # Add your executive stakeholders:
+  # - username: "stakeholder.name"
+  #   reason: "Executive Stakeholder — always extract"
+  # Add your executive assistant:
+  # - username: "ea.name"
+  #   reason: "Executive Assistant — scheduling, admin, logistics"
+  # Add board members and investors:
+  # - username: "board.member"
+  #   reason: "Board member - always extract"
+
+# ============================================
+# WHAT MATTERS TO YOU
+# ============================================
+themes:
+  fundraising:
+    priority: critical
+    description: "Investor relations, fundraising, board prep"
+    keywords:
+      - "fundraise"
+      - "raise"
+      - "round"
+      - "term sheet"
+      - "board meeting"
+      - "board deck"
+      - "investor"
+      - "due diligence"
+      - "runway"
+      - "burn rate"
+      - "cap table"
+
+  revenue:
+    priority: critical
+    description: "Deals, pricing, contracts, pipeline — CEO is the primary closer"
+    keywords:
+      - "pricing"
+      - "contract"
+      - "expansion"
+      - "deal"
+      - "pilot"
+      - "enterprise"
+      - "ARR"
+      - "MRR"
+      - "churn"
+      - "renewal"
+      - "close"
+      - "EAP"
+      - "early adopter"
+      - "pipeline"
+      - "proposal"
+      - "lead"
+      - "qualified"
+      - "discovery"
+      - "demo"
+      - "buyer"
+      - "ICP"
+      - "outbound"
+
+  decision_ownership:
+    priority: critical
+    description: "Core category — AI decision delegation, autonomy, governance"
+    keywords:
+      - "decision ownership"
+      - "delegation"
+      - "autonomy"
+      - "governance"
+      - "supervision"
+      - "trust"
+      - "judgment"
+      - "agent"
+      - "AI labor"
+
+  strategic:
+    priority: high
+    description: "Company direction, major bets, market positioning"
+    keywords:
+      - "strategy"
+      - "vision"
+      - "roadmap"
+      - "pivot"
+      - "market"
+      - "competitor"
+      - "positioning"
+      - "go-to-market"
+      - "GTM"
+      - "category"
+      - "partnership"
+
+  customer_signal:
+    priority: high
+    description: "Customer feedback that validates or invalidates direction"
+    keywords:
+      - "customer"
+      - "prospect"
+      - "buyer"
+      - "feedback"
+      - "objection"
+      - "trust objection"
+      - "willing to delegate"
+      - "buying intent"
+      - "use case"
+      - "escalation"
+
+  hiring:
+    priority: high
+    description: "Key hires, org design, leadership recruiting"
+    keywords:
+      - "hiring"
+      - "headcount"
+      - "offer"
+      - "candidate"
+      - "recruiting"
+      - "org design"
+      - "leadership hire"
+      - "VP search"
+
+  delivery_risk:
+    priority: high
+    description: "Implementation risks, timeline slips, customer-facing issues"
+    keywords:
+      - "blocked"
+      - "slipping"
+      - "at risk"
+      - "go-live"
+      - "production"
+      - "SLA"
+      - "quality"
+      - "defect"
+      - "UAT"
+
+  awareness:
+    priority: low
+    description: "General updates — flag only, no tasks"
+    keywords:
+      - "fyi"
+      - "update"
+      - "status"
+      - "heads up"
+
+# ============================================
+# WHAT TO ALWAYS SKIP
+# ============================================
+# CEO has very few skip keywords — at this level,
+# even small signals can be strategically relevant.
+skip_keywords:
+  - "typo"
+  - "formatting"
+  - "color change"
+  - "spacing"
+
+# ============================================
+# TICKET DETECTION
+# ============================================
+ticket_detection:
+  enabled: true
+  pattern: '[A-Z]{2,5}-\d{1,5}'  # Matches DDS-123, ES-456, etc.

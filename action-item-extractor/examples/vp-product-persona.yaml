@@ -1,0 +1,137 @@
+# ============================================
+# EXAMPLE: VP of Product
+# ============================================
+# A VP of Product who owns one product line directly
+# and has executive oversight on a second. Heavily
+# focused on blocking, strategic, and customer themes.
+# ============================================
+
+identity:
+  name: "Jordan Rivera"
+  aliases: ["Jordan", "JR", "jordan.rivera"]
+  slack_user_id: "U04EXAMPLE1"
+  role: "VP of Product"
+
+projects:
+  analytics-platform:
+    name: "Analytics Platform"
+    my_role: "I own the product — roadmap, prioritization, and go-to-market"
+    extract_level: all
+    detect_keywords: ["analytics platform", "AP", "analytics"]
+    channels: ["C04AP-GENERAL", "C04AP-ENGINEERING", "C04AP-DESIGN"]
+
+  data-pipeline:
+    name: "Data Pipeline"
+    my_role: "Executive oversight — a senior PM runs day-to-day"
+    extract_level: strategic_only
+    detect_keywords: ["data pipeline", "DP", "ingestion"]
+    channels: ["C04DP-GENERAL"]
+
+  internal-tools:
+    name: "Internal Tools"
+    my_role: "Awareness only — engineering owns this"
+    extract_level: awareness_only
+    detect_keywords: ["internal tools", "admin portal"]
+    channels: []
+
+priority_contacts:
+  - username: "ceo"
+    reason: "CEO - always extract requests"
+  - username: "cro"
+    reason: "CRO - revenue implications"
+  - username: "vp.engineering"
+    reason: "VP Eng - cross-functional dependency"
+  - username: "enterprise.csm"
+    reason: "Enterprise CSM - top-tier customer escalations"
+
+themes:
+  blocking:
+    priority: critical
+    description: "Team blocked, needs VP decision to proceed"
+    keywords:
+      - "blocked"
+      - "can't proceed"
+      - "need decision"
+      - "waiting on"
+      - "blocker"
+      - "need approval"
+      - "need sign-off"
+      - "unblock"
+
+  strategic:
+    priority: high
+    description: "Roadmap, prioritization, and product direction"
+    keywords:
+      - "roadmap"
+      - "strategy"
+      - "prioritize"
+      - "scope"
+      - "go-live"
+      - "launch"
+      - "sprint planning"
+      - "quarterly planning"
+      - "OKR"
+      - "initiative"
+      - "bet"
+
+  customer_critical:
+    priority: high
+    description: "Customer requirements, escalations, churn risk"
+    keywords:
+      - "escalation"
+      - "churn risk"
+      - "customer requirement"
+      - "customer wants"
+      - "customer needs"
+      - "enterprise deal"
+      - "QBR"
+      - "renewal"
+      - "NPS"
+      - "feature request"
+
+  revenue:
+    priority: high
+    description: "Pricing, packaging, deals, expansion"
+    keywords:
+      - "pricing"
+      - "contract"
+      - "expansion"
+      - "deal"
+      - "pilot"
+      - "packaging"
+      - "tier"
+      - "upsell"
+
+  coordination:
+    priority: medium
+    description: "Cross-team alignment and dependency management"
+    keywords:
+      - "sync"
+      - "align"
+      - "coordinate"
+      - "handoff"
+      - "dependency"
+      - "cross-functional"
+
+  awareness:
+    priority: low
+    description: "FYI items, status updates"
+    keywords:
+      - "fyi"
+      - "update"
+      - "status"
+      - "heads up"
+
+skip_keywords:
+  - "typo"
+  - "minor bug"
+  - "color change"
+  - "spacing"
+  - "alignment"
+  - "formatting"
+  - "lint"
+  - "refactor"
+
+ticket_detection:
+  enabled: true
+  pattern: '[A-Z]{2,5}-\d{1,5}'

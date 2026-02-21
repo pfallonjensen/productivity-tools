@@ -1,0 +1,130 @@
+# ============================================
+# WHO YOU ARE
+# ============================================
+identity:
+  name: "Your Name"
+  aliases: ["First", "Initials", "username"]
+  slack_user_id: "UXXXXXXXXXX"
+  role: "Your Role Title"
+
+# ============================================
+# YOUR PROJECTS
+# Each project defines your relationship to it,
+# which controls how aggressively tasks are extracted.
+# ============================================
+projects:
+  my-main-project:
+    name: "Main Product"
+    my_role: "I'm the PM and owner"
+    # all = extract everything relevant (you're deeply involved)
+    # strategic_only = extract only high-priority themes (someone else handles day-to-day)
+    # awareness_only = flag for awareness, don't create tasks
+    extract_level: all
+    detect_keywords: ["main product", "MP"]
+    channels: []  # Slack channel IDs
+
+  other-project:
+    name: "Other Initiative"
+    my_role: "Executive oversight only"
+    extract_level: strategic_only
+    detect_keywords: ["other initiative"]
+    channels: []
+
+# ============================================
+# PEOPLE WHOSE REQUESTS ALWAYS GET EXTRACTED
+# (your boss, key stakeholders, important clients)
+# ============================================
+priority_contacts:
+  - username: "ceo.name"
+    reason: "CEO - always extract"
+  - username: "key.stakeholder"
+    reason: "Key stakeholder"
+
+# ============================================
+# WHAT MATTERS TO YOU
+# Themes are matched by keywords. Priority determines
+# whether they're extracted for strategic_only projects.
+# ============================================
+themes:
+  blocking:
+    priority: critical
+    description: "Team blocked, needs your input to proceed"
+    keywords:
+      - "blocked"
+      - "can't proceed"
+      - "need decision"
+      - "waiting on"
+      - "blocker"
+      - "need approval"
+
+  strategic:
+    priority: high
+    description: "Direction, roadmap, and planning decisions"
+    keywords:
+      - "roadmap"
+      - "strategy"
+      - "prioritize"
+      - "scope"
+      - "go-live"
+      - "launch"
+      - "sprint planning"
+
+  customer_critical:
+    priority: high
+    description: "Customer requirements, escalations, relationships"
+    keywords:
+      - "escalation"
+      - "churn risk"
+      - "customer requirement"
+      - "customer wants"
+      - "customer needs"
+
+  revenue:
+    priority: high
+    description: "Pricing, deals, contracts, expansion"
+    keywords:
+      - "pricing"
+      - "contract"
+      - "expansion"
+      - "deal"
+      - "pilot"
+
+  coordination:
+    priority: medium
+    description: "Cross-team alignment and sync items"
+    keywords:
+      - "sync"
+      - "align"
+      - "coordinate"
+      - "handoff"
+      - "dependency"
+
+  awareness:
+    priority: low
+    description: "FYI items, status updates"
+    keywords:
+      - "fyi"
+      - "update"
+      - "status"
+      - "heads up"
+
+# ============================================
+# WHAT TO ALWAYS SKIP
+# ============================================
+skip_keywords:
+  - "typo"
+  - "minor bug"
+  - "color change"
+  - "spacing"
+  - "alignment"
+  - "formatting"
+
+# ============================================
+# WORK TRACKING INTEGRATION
+# ============================================
+ticket_detection:
+  enabled: true
+  pattern: '[A-Z]{2,5}-\d{1,5}'  # Jira/Linear style: PROJ-123
+  # Other examples:
+  # pattern: '#\d+'              # GitHub issues: #123
+  # pattern: 'T\d{7,}'          # Phabricator: T1234567

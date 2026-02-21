@@ -1,0 +1,147 @@
+# ============================================
+# EXAMPLE: Founder / CEO
+# ============================================
+# A founder-CEO who delegates most execution to
+# their leadership team. Only "strategic_only"
+# extraction because the CEO's time is the scarcest
+# resource — surface only what truly needs their
+# attention. Very few skip_keywords because at the
+# CEO level, even small signals can matter.
+# ============================================
+
+identity:
+  name: "Sam Nakamura"
+  aliases: ["Sam", "SN", "sam.nakamura", "founder"]
+  slack_user_id: "U04EXAMPLE3"
+  role: "CEO / Co-Founder"
+
+projects:
+  core-product:
+    name: "Core Product"
+    my_role: "Founder vision — VP Product runs execution"
+    extract_level: strategic_only
+    detect_keywords: ["core product", "platform", "product"]
+    channels: ["C04PRODUCT-LEADS"]
+
+  sales:
+    name: "Sales & Revenue"
+    my_role: "I close enterprise deals and set pricing strategy"
+    extract_level: strategic_only
+    detect_keywords: ["sales", "pipeline", "deal", "revenue"]
+    channels: ["C04SALES-LEADS"]
+
+  company-wide:
+    name: "Company Operations"
+    my_role: "CEO — culture, hiring, fundraising, board"
+    extract_level: strategic_only
+    detect_keywords: ["all-hands", "company", "org"]
+    channels: ["C04LEADERSHIP", "C04EXEC"]
+
+priority_contacts:
+  - username: "board.member1"
+    reason: "Board member - always extract"
+  - username: "board.member2"
+    reason: "Board member - always extract"
+  - username: "lead.investor"
+    reason: "Lead investor - always extract"
+  - username: "vp.product"
+    reason: "VP Product - product escalations"
+  - username: "vp.engineering"
+    reason: "VP Engineering - technical escalations"
+  - username: "vp.sales"
+    reason: "VP Sales - deal escalations"
+  - username: "head.of.finance"
+    reason: "Finance lead - runway and burn"
+
+themes:
+  fundraising:
+    priority: critical
+    description: "Investor relations, fundraising, board prep"
+    keywords:
+      - "fundraise"
+      - "raise"
+      - "round"
+      - "term sheet"
+      - "board meeting"
+      - "board deck"
+      - "investor"
+      - "due diligence"
+      - "runway"
+      - "burn rate"
+      - "cap table"
+
+  revenue:
+    priority: critical
+    description: "Deals, pricing, contracts, revenue milestones"
+    keywords:
+      - "pricing"
+      - "contract"
+      - "expansion"
+      - "deal"
+      - "pilot"
+      - "enterprise"
+      - "ARR"
+      - "MRR"
+      - "churn"
+      - "renewal"
+      - "close"
+
+  strategic:
+    priority: high
+    description: "Company direction, major bets, market positioning"
+    keywords:
+      - "strategy"
+      - "vision"
+      - "roadmap"
+      - "pivot"
+      - "market"
+      - "competitor"
+      - "positioning"
+      - "go-to-market"
+      - "GTM"
+      - "partnership"
+
+  hiring:
+    priority: high
+    description: "Key hires, org design, leadership recruiting"
+    keywords:
+      - "hiring"
+      - "headcount"
+      - "offer"
+      - "candidate"
+      - "recruiting"
+      - "org design"
+      - "leadership hire"
+      - "VP search"
+      - "executive search"
+
+  escalation:
+    priority: high
+    description: "Issues escalated to CEO level"
+    keywords:
+      - "escalation"
+      - "escalate"
+      - "CEO decision"
+      - "need Sam"
+      - "founder call"
+      - "urgent"
+      - "critical"
+
+  awareness:
+    priority: low
+    description: "General updates"
+    keywords:
+      - "fyi"
+      - "update"
+      - "status"
+      - "heads up"
+
+# CEO has very few skip keywords — at this level,
+# even small signals can be strategically relevant.
+skip_keywords:
+  - "typo"
+  - "formatting"
+
+ticket_detection:
+  enabled: false
+  pattern: '[A-Z]{2,5}-\d{1,5}'

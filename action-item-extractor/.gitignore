@@ -1,0 +1,27 @@
+# Config with secrets
+config.yaml
+persona.yaml
+tim-persona.yaml
+/custom_rules.py
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Runtime
+*.log
+.users_cache.json
+extracted_tasks*.json
+last-run.txt
+.consolidation_done
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
