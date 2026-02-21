@@ -69,14 +69,39 @@ claude-mute status  # Check state
 **Example status output:**
 ```
 🔊 Audio: UNMUTED
-🎤 Mic: IN USE (audio auto-suppressed)
+🎤 Mic: FREE (audio will play if unmuted)
 ```
+
+### Override Mic Detection (Brainstorm Sessions)
+
+When you're in a brainstorm or jam session and want notifications even though you're on a call:
+
+```bash
+$ claude-mute status
+
+🔊 Audio: UNMUTED
+🎤 Mic: IN USE (audio currently suppressed)
+
+Want notifications during this meeting? (y/n): y
+
+✓ Override active - you'll hear notifications during meetings
+  Run 'claude-mute off' to return to normal
+```
+
+**The tool discovers itself** — when mic blocks audio, status command offers to override. No flags to remember.
+
+**Return to normal:**
+```bash
+claude-mute off     # Clears override and manual mute
+```
+
+Or run `status` again after the meeting — it will suggest disabling override when mic becomes free.
 
 ### How It Works
 
 **Audio plays only when ALL conditions are met:**
 1. ✅ Manual mute OFF
-2. ✅ Mic not in use (no Zoom/Teams/Meet)
+2. ✅ Mic not in use (no Zoom/Teams/Meet) OR force override active
 3. ✅ Not a subagent idle reminder
 4. ✅ Not within 15-min cooldown
 
