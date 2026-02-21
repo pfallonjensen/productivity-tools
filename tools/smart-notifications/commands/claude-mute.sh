@@ -3,8 +3,10 @@
 # Usage: claude-mute        (toggle)
 #        claude-mute on     (mute audio)
 #        claude-mute off    (unmute audio)
+#        claude-mute status (check state, interactive override)
 
 QUIET_FILE="$HOME/.claude-quiet"
+FORCE_FILE="$HOME/.claude-force-audio"
 
 case "${1:-toggle}" in
     on)
@@ -14,7 +16,8 @@ case "${1:-toggle}" in
         ;;
     off)
         rm -f "$QUIET_FILE"
-        echo "🔊 Claude audio unmuted"
+        rm -f "$FORCE_FILE"
+        echo "🔊 Claude audio unmuted (respects mic-in-use)"
         ;;
     toggle)
         if [[ -f "$QUIET_FILE" ]]; then
@@ -27,16 +30,50 @@ case "${1:-toggle}" in
         fi
         ;;
     status)
+        # Show current state
         if [[ -f "$QUIET_FILE" ]]; then
             echo "🔇 Audio: MUTED (manual override active)"
         else
             echo "🔊 Audio: UNMUTED"
         fi
+
+        if [[ -f "$FORCE_FILE" ]]; then
+            echo "⚡ Override: ACTIVE (ignores mic-in-use)"
+        fi
+
         MIC_STATUS=$("$HOME/.claude/hooks/mic-check" 2>/dev/null)
         if [[ "$MIC_STATUS" == "in_use" ]]; then
-            echo "🎤 Mic: IN USE (audio auto-suppressed)"
+            echo "🎤 Mic: IN USE (audio currently suppressed)"
+
+            # Interactive override prompt (only if not already forced and not manually muted)
+            if [[ ! -f "$FORCE_FILE" ]] && [[ ! -f "$QUIET_FILE" ]]; then
+                echo ""
+                read -p "Want notifications during this meeting? (y/n): " -n 1 -r
+                echo ""
+
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                    touch "$FORCE_FILE"
+                    echo ""
+                    echo "✓ Override active - you'll hear notifications during meetings"
+                    echo "  Run 'claude-mute off' to return to normal"
+                fi
+            fi
         else
             echo "🎤 Mic: FREE (audio will play if unmuted)"
+
+            # If force mode is active but mic is free, offer to disable it
+            if [[ -f "$FORCE_FILE" ]]; then
+                echo ""
+                echo "Override is active but mic is free."
+                read -p "Disable override and return to normal? (y/n): " -n 1 -r
+                echo ""
+
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                    rm -f "$FORCE_FILE"
+                    echo ""
+                    echo "✓ Returned to normal (will auto-suppress during meetings)"
+                fi
+            fi
         fi
         ;;
     *)
