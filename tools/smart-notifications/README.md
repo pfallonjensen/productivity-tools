@@ -14,8 +14,8 @@ Running 10+ concurrent Claude Code sessions with default notifications:
 
 Multi-layer intelligent notification system:
 - ✅ **Session identification** — hear the session name you set
-- ✅ **Auto-mute during meetings** — detects mic in use
-- ✅ **Manual mute control** — simple on/off toggle
+- ✅ **Manual audio control** — mute/unmute/force modes
+- ✅ **Force override** — play audio even when muted (for important sessions)
 - ✅ **Notification cooldown** — 15-min dedup per session
 - ✅ **Subagent filtering** — only real alerts, not idle noise
 
@@ -58,56 +58,56 @@ Then provide a name like "trading analysis" or "DDS sprint work".
 
 **From within Claude Code:**
 ```
-/session-audio          # Check status (interactive override)
-/session-audio on       # Mute
-/session-audio off      # Unmute
-/session-audio toggle   # Switch
+/session-audio          # Check status
+/session-audio on       # Mute (for meetings)
+/session-audio force    # Force ON (play even when muted)
+/session-audio off      # Unmute (return to normal)
+/session-audio toggle   # Switch muted ↔ unmuted
 ```
 
 **From terminal:**
 ```bash
-claude-mute            # Same options as above
-claude-mute status     # Check state
+claude-mute on          # Mute
+claude-mute force       # Force ON
+claude-mute off         # Unmute
+claude-mute toggle      # Switch
+claude-mute status      # Check state
 ```
 
 **Example status output:**
 ```
 🔊 Audio: UNMUTED
-🎤 Mic: FREE (audio will play if unmuted)
 ```
 
-### Override Mic Detection (Brainstorm Sessions)
+### Force Mode (Important Sessions)
 
-When you're in a brainstorm or jam session and want notifications even though you're on a call:
+When you're in a brainstorm session and want notifications even though you're generally in "do not disturb":
 
-```bash
-$ claude-mute status
-
-🔊 Audio: UNMUTED
-🎤 Mic: IN USE (audio currently suppressed)
-
-Want notifications during this meeting? (y/n): y
-
-✓ Override active - you'll hear notifications during meetings
-  Run 'claude-mute off' to return to normal
+```
+/session-audio force
 ```
 
-**The tool discovers itself** — when mic blocks audio, status command offers to override. No flags to remember.
-
-**Return to normal:**
-```bash
-claude-mute off     # Clears override and manual mute
+Output:
+```
+⚡ Force mode ACTIVE
+   Audio will play even when manually muted
+   Run '/session-audio off' to return to normal
 ```
 
-Or run `status` again after the meeting — it will suggest disabling override when mic becomes free.
+**Use cases:**
+- Regular meeting → `/session-audio on` (mute)
+- Important brainstorm → `/session-audio force` (always play)
+- Meeting over → `/session-audio off` (back to normal)
 
 ### How It Works
 
-**Audio plays only when ALL conditions are met:**
-1. ✅ Manual mute OFF
-2. ✅ Mic not in use (no Zoom/Teams/Meet) OR force override active
+**Audio plays when:**
+1. ✅ Force mode active, OR
+2. ✅ Manual mute OFF (normal mode)
+
+**PLUS (always):**
 3. ✅ Not a subagent idle reminder
-4. ✅ Not within 15-min cooldown
+4. ✅ Not within 15-min cooldown window
 
 **Notification banners always show** — only audio is controlled.
 
@@ -138,6 +138,20 @@ Check if session is labeled:
 
 If unlabeled, it will say "Session 322fe521" (truncated ID).
 
+**"Audio playing during meetings"**
+
+Mute before your meeting:
+```
+/session-audio on
+```
+
+**"Need audio during this specific meeting"**
+
+Enable force mode:
+```
+/session-audio force
+```
+
 **"Still getting notification storms"**
 
 Restart all Claude Code sessions — they need to reload the new hooks.
@@ -162,20 +176,15 @@ Removes all files except session labels (prompts before deleting).
    - Always shows macOS banner
    - Conditionally plays audio (manual mute + mic-check)
 
-2. **mic-check** — Python CoreAudio wrapper
-   - Uses ctypes to call `AudioObjectGetPropertyData`
-   - Checks `kAudioDevicePropertyDeviceIsRunningSomewhere`
-   - Returns "in_use" or "free" to stdout
+2. **claude-mute.sh** — Simple state controller
+   - Creates/removes `~/.claude-quiet` (muted) or `~/.claude-force-audio` (force on)
+   - Three states: unmuted, muted, force
 
-3. **claude-mute.sh** — Simple toggle script
-   - Creates/removes `~/.claude-quiet` file
-   - Shows combined manual + mic status
-
-4. **session-name skill** — Session labeling
+3. **session-name skill** — Session labeling
    - Auto-detects session ID from JSONL files
    - Writes to `~/.claude/session-labels/{uuid}`
 
-5. **session-audio skill** — Audio control from within Claude Code
+4. **session-audio skill** — Audio control from within Claude Code
    - Wraps claude-mute.sh command
    - Works from any session (global setting)
 
