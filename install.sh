@@ -74,12 +74,6 @@ if [[ "$MODE" == "install" ]]; then
         chmod +x ~/.claude/hooks/notify.sh
     fi
 
-    log_info "Installing mic-check..."
-    if [[ "$DRY_RUN" == false ]]; then
-        curl -fsSL "$REPO_BASE/$TOOL_PATH/hooks/mic-check" -o ~/.claude/hooks/mic-check
-        chmod +x ~/.claude/hooks/mic-check
-    fi
-
     log_info "Installing claude-mute command..."
     if [[ "$DRY_RUN" == false ]]; then
         curl -fsSL "$REPO_BASE/$TOOL_PATH/commands/claude-mute.sh" -o ~/.claude/commands/claude-mute.sh
@@ -89,17 +83,6 @@ if [[ "$MODE" == "install" ]]; then
     log_info "Installing name-session skill..."
     if [[ "$DRY_RUN" == false ]]; then
         curl -fsSL "$REPO_BASE/$TOOL_PATH/skills/name-session/skill.md" -o ~/.claude/skills/name-session/skill.md
-    fi
-
-    # Test installation
-    if [[ "$DRY_RUN" == false ]]; then
-        log_info "Testing mic-check..."
-        MIC_STATUS=$(~/.claude/hooks/mic-check 2>/dev/null)
-        if [[ "$MIC_STATUS" == "free" ]] || [[ "$MIC_STATUS" == "in_use" ]]; then
-            log_info "Mic-check working: $MIC_STATUS"
-        else
-            log_warn "Mic-check returned unexpected value: $MIC_STATUS"
-        fi
     fi
 
     # Settings.json hooks (interactive)
@@ -254,7 +237,6 @@ elif [[ "$MODE" == "uninstall" ]]; then
     # Remove files
     log_info "Removing hook files..."
     rm -f ~/.claude/hooks/notify.sh
-    rm -f ~/.claude/hooks/mic-check
 
     log_info "Removing command files..."
     rm -f ~/.claude/commands/claude-mute.sh
