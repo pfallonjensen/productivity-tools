@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""Check if the default audio input device (microphone) is in use by any application.
+Uses CoreAudio via ctypes — no compilation needed.
+Prints 'in_use' or 'free' to stdout."""
+
+import ctypes
+import ctypes.util
+import struct
+import sys
+
+# Load CoreAudio framework
+CoreAudio = ctypes.cdll.LoadLibrary('/System/Library/Frameworks/CoreAudio.framework/CoreAudio')
+
+# Constants from AudioHardwareBase.h
+kAudioObjectSystemObject = 1
+kAudioHardwarePropertyDefaultInputDevice = int.from_bytes(b'dIn ', 'big')
+kAudioDevicePropertyDeviceIsRunningSomewhere = int.from_bytes(b'goin', 'big')
+kAudioObjectPropertyScopeGlobal = int.from_bytes(b'glob', 'big')
+kAudioObjectPropertyElementMain = 0
+
+# AudioObjectPropertyAddress struct: 3x UInt32
+class AudioObjectPropertyAddress(ctypes.Structure):
+    _fields_ = [
+        ('mSelector', ctypes.c_uint32),
+        ('mScope', ctypes.c_uint32),
+        ('mElement', ctypes.c_uint32),
+    ]
+
+# Get default input device ID
+address = AudioObjectPropertyAddress(
+    kAudioHardwarePropertyDefaultInputDevice,
+    kAudioObjectPropertyScopeGlobal,
+    kAudioObjectPropertyElementMain
+)
+device_id = ctypes.c_uint32(0)
+size = ctypes.c_uint32(ctypes.sizeof(device_id))
+
+status = CoreAudio.AudioObjectGetPropertyData(
+    ctypes.c_uint32(kAudioObjectSystemObject),
+    ctypes.byref(address), 0, None,
+    ctypes.byref(size), ctypes.byref(device_id)
+)
+if status != 0:
+    print('free')
+    sys.exit(0)
+
+# Check if the device is running (any app using it)
+address.mSelector = kAudioDevicePropertyDeviceIsRunningSomewhere
+is_running = ctypes.c_uint32(0)
+size = ctypes.c_uint32(ctypes.sizeof(is_running))
+
+status = CoreAudio.AudioObjectGetPropertyData(
+    device_id, ctypes.byref(address), 0, None,
+    ctypes.byref(size), ctypes.byref(is_running)
+)
+if status != 0:
+    print('free')
+    sys.exit(0)
+
+print('in_use' if is_running.value else 'free')
