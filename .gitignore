@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Backup files
+*.backup
+*.bak
+
+# Test artifacts
+test-output/
+*.log
