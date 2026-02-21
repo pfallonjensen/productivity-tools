@@ -14,8 +14,7 @@ Running 10+ concurrent Claude Code sessions with default notifications:
 
 Multi-layer intelligent notification system:
 - ✅ **Session identification** — hear the session name you set
-- ✅ **Manual audio control** — mute/unmute/force modes
-- ✅ **Force override** — play audio even when muted (for important sessions)
+- ✅ **Simple mute control** — mute before meetings, unmute after
 - ✅ **Notification cooldown** — 15-min dedup per session
 - ✅ **Subagent filtering** — only real alerts, not idle noise
 
@@ -59,55 +58,34 @@ Then provide a name like "trading analysis" or "DDS sprint work".
 **From within Claude Code:**
 ```
 /session-audio          # Check status
-/session-audio on       # Mute (for meetings)
-/session-audio force    # Force ON (play even when muted)
-/session-audio off      # Unmute (return to normal)
+/session-audio mute     # Mute audio
+/session-audio unmute   # Unmute audio
 /session-audio toggle   # Switch muted ↔ unmuted
 ```
 
 **From terminal:**
 ```bash
-claude-mute on          # Mute
-claude-mute force       # Force ON
-claude-mute off         # Unmute
+claude-mute mute        # Mute
+claude-mute unmute      # Unmute
 claude-mute toggle      # Switch
 claude-mute status      # Check state
 ```
 
-**Example status output:**
+**Example workflow:**
 ```
-🔊 Audio: UNMUTED
-```
+# Before meeting
+/session-audio mute
 
-### Force Mode (Important Sessions)
-
-When you're in a brainstorm session and want notifications even though you're generally in "do not disturb":
-
+# After meeting
+/session-audio unmute
 ```
-/session-audio force
-```
-
-Output:
-```
-⚡ Force mode ACTIVE
-   Audio will play even when manually muted
-   Run '/session-audio off' to return to normal
-```
-
-**Use cases:**
-- Regular meeting → `/session-audio on` (mute)
-- Important brainstorm → `/session-audio force` (always play)
-- Meeting over → `/session-audio off` (back to normal)
 
 ### How It Works
 
 **Audio plays when:**
-1. ✅ Force mode active, OR
-2. ✅ Manual mute OFF (normal mode)
-
-**PLUS (always):**
-3. ✅ Not a subagent idle reminder
-4. ✅ Not within 15-min cooldown window
+1. ✅ Not manually muted (`~/.claude-quiet` doesn't exist)
+2. ✅ Not a subagent idle reminder
+3. ✅ Not within 15-min cooldown window
 
 **Notification banners always show** — only audio is controlled.
 
@@ -142,14 +120,7 @@ If unlabeled, it will say "Session 322fe521" (truncated ID).
 
 Mute before your meeting:
 ```
-/session-audio on
-```
-
-**"Need audio during this specific meeting"**
-
-Enable force mode:
-```
-/session-audio force
+/session-audio mute
 ```
 
 **"Still getting notification storms"**
@@ -176,9 +147,9 @@ Removes all files except session labels (prompts before deleting).
    - Always shows macOS banner
    - Conditionally plays audio (manual mute + mic-check)
 
-2. **claude-mute.sh** — Simple state controller
-   - Creates/removes `~/.claude-quiet` (muted) or `~/.claude-force-audio` (force on)
-   - Three states: unmuted, muted, force
+2. **claude-mute.sh** — Simple toggle
+   - Creates/removes `~/.claude-quiet` file
+   - Two states: muted or unmuted
 
 3. **session-name skill** — Session labeling
    - Auto-detects session ID from JSONL files
