@@ -13,9 +13,10 @@ Control Claude Code audio notifications from within any session.
 Parse the argument and execute the corresponding mode:
 
 ### Usage:
-- `/session-audio` or `/session-audio status` — show current state (interactive override if applicable)
-- `/session-audio on` — mute audio globally
-- `/session-audio off` — unmute audio globally (clears override too)
+- `/session-audio` or `/session-audio status` — show current state
+- `/session-audio on` — mute audio (for meetings)
+- `/session-audio off` — unmute audio (return to normal)
+- `/session-audio force` — force audio ON (plays even when muted - for important brainstorm sessions)
 - `/session-audio toggle` — switch between muted/unmuted
 
 ### Implementation:

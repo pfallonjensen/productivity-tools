@@ -101,18 +101,12 @@ fi
 osascript -e "display notification \"$TYPE_LABEL\" with title \"Claude: $SESSION_NAME\"" 2>/dev/null &
 
 # --- Audio notification ---
-# Skip if: manual mute (~/.claude-quiet) OR (mic in use AND not force mode)
+# Skip if manually muted (unless force override active)
 if [[ ! -f "$HOME/.claude-quiet" ]]; then
-    # Force mode ignores mic-in-use (for brainstorms/jam sessions)
-    if [[ -f "$HOME/.claude-force-audio" ]]; then
-        say "$AUDIO_NAME — $TYPE_LABEL" &
-    else
-        # Normal mode: check mic first
-        MIC_STATUS=$("$HOME/.claude/hooks/mic-check" 2>/dev/null)
-        if [[ "$MIC_STATUS" != "in_use" ]]; then
-            say "$AUDIO_NAME — $TYPE_LABEL" &
-        fi
-    fi
+    say "$AUDIO_NAME — $TYPE_LABEL" &
+elif [[ -f "$HOME/.claude-force-audio" ]]; then
+    # Force mode overrides manual mute (for important sessions)
+    say "$AUDIO_NAME — $TYPE_LABEL" &
 fi
 
 exit 0
