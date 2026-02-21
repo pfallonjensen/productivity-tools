@@ -101,11 +101,8 @@ fi
 osascript -e "display notification \"$TYPE_LABEL\" with title \"Claude: $SESSION_NAME\"" 2>/dev/null &
 
 # --- Audio notification ---
-# Skip if manually muted (unless force override active)
+# Play audio unless manually muted
 if [[ ! -f "$HOME/.claude-quiet" ]]; then
-    say "$AUDIO_NAME — $TYPE_LABEL" &
-elif [[ -f "$HOME/.claude-force-audio" ]]; then
-    # Force mode overrides manual mute (for important sessions)
     say "$AUDIO_NAME — $TYPE_LABEL" &
 fi
 

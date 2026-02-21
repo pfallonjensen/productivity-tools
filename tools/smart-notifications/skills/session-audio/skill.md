@@ -14,9 +14,8 @@ Parse the argument and execute the corresponding mode:
 
 ### Usage:
 - `/session-audio` or `/session-audio status` — show current state
-- `/session-audio on` — mute audio (for meetings)
-- `/session-audio off` — unmute audio (return to normal)
-- `/session-audio force` — force audio ON (plays even when muted - for important brainstorm sessions)
+- `/session-audio mute` — mute audio
+- `/session-audio unmute` — unmute audio
 - `/session-audio toggle` — switch between muted/unmuted
 
 ### Implementation:
@@ -35,12 +34,12 @@ $HOME/.claude/commands/claude-mute.sh ${ARG:-status}
 → Run: `$HOME/.claude/commands/claude-mute.sh status`
 → If interactive prompt appears, let user respond
 
-**User: `/session-audio on`**
-→ Run: `$HOME/.claude/commands/claude-mute.sh on`
+**User: `/session-audio mute`**
+→ Run: `$HOME/.claude/commands/claude-mute.sh mute`
 → Show confirmation message
 
-**User: `/session-audio off`**
-→ Run: `$HOME/.claude/commands/claude-mute.sh off`
+**User: `/session-audio unmute`**
+→ Run: `$HOME/.claude/commands/claude-mute.sh unmute`
 → Show confirmation message
 
 **User: `/session-audio toggle`**
