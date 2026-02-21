@@ -1,42 +1,59 @@
-# Claude Code Tools
+# Productivity Tools
 
-Productivity enhancements and custom skills for [Claude Code](https://claude.com/claude-code).
+Collection of automation systems and productivity enhancements for development workflows.
 
 ## Available Tools
 
-### 🔔 Smart Notifications
-**Description:** Intelligent notification system for Claude Code with session identification and auto-mute
+### 🔔 Smart Notifications (Claude Code)
 
-**What's Included:**
-- Unified notification hook (handles Notification + Stop events)
-- Mic-in-use detection (Python CoreAudio wrapper)
-- Manual mute/unmute control command
-- Session labeling skill
-- One-line installer with auto-config
+Intelligent notification system for Claude Code with session identification and mute control.
 
 **Features:**
 - 🏷️ Session identification (hear which session needs attention)
-- 🎤 Auto-mute during meetings (mic-in-use detection)
-- 🔇 Manual mute control
+- 🔇 Simple mute/unmute control
 - ⏱️ Notification storm prevention (15-min cooldown)
 - 🤖 Subagent noise filtering
 
 **Installation:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/pfallonjensen/claude-code-tools/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/pfallonjensen/productivity-tools/main/install.sh | bash
 ```
 
-**Full Documentation:** [tools/smart-notifications/README.md](tools/smart-notifications/README.md)
-
-**Documentation:** [Full README →](tools/smart-notifications/README.md)
+**[Full Documentation →](tools/smart-notifications/README.md)**
 
 ---
 
-### 💾 Claude Session Memory System
+### 💾 Claude Session Memory System (Claude Code)
 
 Session backup and restore system for Claude Code.
 
-**Documentation:** See `claude-session-memory-system/` directory
+**[Documentation →](claude-session-memory-system/)**
+
+---
+
+### 📝 Meeting Transcript System
+
+Automatic sync of Google Meet transcripts from Google Drive to local folders.
+
+**What it does:**
+- Syncs `.txt` transcripts from Google Drive
+- Runs hourly via LaunchAgent (macOS)
+- Preserves structure and timestamps
+
+**[Documentation →](meeting-transcript-system/README.md)**
+
+---
+
+### 🔄 Obsidian Backup System
+
+Automatic Git backup system for Obsidian vaults.
+
+**What it does:**
+- Daily automated commits and push to GitHub
+- Runs at 3 AM via LaunchAgent (macOS)
+- Handles large vaults efficiently
+
+**[Documentation →](obsidian-backup-system/README.md)**
 
 ---
 
@@ -44,14 +61,9 @@ Session backup and restore system for Claude Code.
 
 Each tool has its own installation method. See tool-specific documentation for details.
 
-**Uninstall:**
-```bash
-curl -fsSL https://raw.githubusercontent.com/pfallonjensen/claude-code-tools/main/install.sh | bash -s uninstall
-```
-
 ## Contributing
 
-Personal productivity tools for Claude Code. Feel free to fork and adapt.
+Personal productivity tools I've built for my workflows. Feel free to fork and adapt.
 
 ## License
 
