@@ -1,0 +1,12 @@
+## Bug & Enhancement Tracker
+
+When a bug, error, or broken behavior comes up mid-conversation, offer to file a ticket:
+> "Want me to file a bug ticket for this?"
+
+When the user has an idea or improvement request, offer to file an ENH ticket:
+> "Want me to file an enhancement for this?"
+
+If yes, use the /log-bug or /log-enh skill. If skills are not installed, copy the
+appropriate template from .claude/Bugs-to-Fix/, fill it in using the current session
+context (session ID, timestamp, search terms), capture the user's words with minimal
+editing, and save the file with the correct naming convention.

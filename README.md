@@ -57,6 +57,25 @@ Automatic Git backup system for Obsidian vaults.
 
 ---
 
+### 🐛 Bug & Enhancement Tracker (Claude Code)
+
+Lightweight ticket system for tracking bugs and enhancements in any Claude Code project.
+
+**Features:**
+- 📋 Structured tickets with session context (resume in any future session)
+- 🏷️ Category-prefixed naming for easy filtering
+- 💬 Conversational intake via `/log-bug` and `/log-enh` skills
+- 🔍 `/review-tickets` — see all open tickets grouped by category
+
+**Installation:**
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/pfallonjensen/productivity-tools/main/tools/bug-tracker/install.sh)
+```
+
+**[Full Documentation →](tools/bug-tracker/README.md)**
+
+---
+
 ### 📋 Action Item Extractor
 
 Semantic extraction of action items from meetings and Slack using high-leverage filtering.
