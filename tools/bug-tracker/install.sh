@@ -52,7 +52,10 @@ if [[ "$MODE" == "install" ]]; then
     fi
     log_info "Created .claude/Bugs-to-Fix/"
 
-    # Step 2: Download templates
+    # Step 2: Download templates and learnings schema
+    if [[ "$DRY_RUN" == false ]]; then
+        mkdir -p "$PROJECT_ROOT/.claude/learnings"
+    fi
     echo ""
     echo "Downloading templates..."
     for template in BUG-TEMPLATE.md ENH-TEMPLATE.md README.md; do
@@ -65,6 +68,17 @@ if [[ "$MODE" == "install" ]]; then
             log_warn "$template already exists, skipping"
         fi
     done
+
+    # Download LEARNINGS.jsonl schema to .claude/learnings/
+    LEARNINGS_FILE="$PROJECT_ROOT/.claude/learnings/LEARNINGS.jsonl"
+    if [[ ! -f "$LEARNINGS_FILE" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            curl -fsSL "$REPO_BASE/templates/LEARNINGS.jsonl" -o "$LEARNINGS_FILE"
+        fi
+        log_info "Downloaded LEARNINGS.jsonl (schema seed)"
+    else
+        log_warn "LEARNINGS.jsonl already exists, skipping"
+    fi
 
     # Step 3: Install skills (optional)
     echo ""

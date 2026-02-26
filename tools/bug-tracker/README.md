@@ -57,11 +57,17 @@ your-project/
     │   ├── BUG-TEMPLATE.md
     │   ├── ENH-TEMPLATE.md
     │   └── ARCH-BUG-001-example.md   ← Actual tickets
+    ├── learnings/
+    │   └── LEARNINGS.jsonl            ← Append-only learnings log
     └── skills/
         ├── log-bug/skill.md
         ├── log-enh/skill.md
         └── review-tickets/skill.md
 ```
+
+**Two layers of memory:**
+- Tickets are ephemeral — they close when resolved
+- Learnings are permanent — every resolved ticket appends a record of root cause, fix, and what to watch for. Future Claude sessions read this and skip rediscovering patterns you've already seen.
 
 ---
 

@@ -10,12 +10,18 @@ Designed to work hand-in-hand with Claude Code: file a ticket mid-conversation, 
 
 ```
 .claude/
-└── Bugs-to-Fix/
-    ├── README.md               ← You are here
-    ├── BUG-TEMPLATE.md         ← Copy this to file a bug
-    ├── ENH-TEMPLATE.md         ← Copy this to file an enhancement
-    └── {PREFIX}-{TYPE}-{NUM}-{slug}.md   ← Actual tickets
+├── Bugs-to-Fix/
+│   ├── README.md               ← You are here
+│   ├── BUG-TEMPLATE.md         ← Copy this to file a bug
+│   ├── ENH-TEMPLATE.md         ← Copy this to file an enhancement
+│   └── {PREFIX}-{TYPE}-{NUM}-{slug}.md   ← Actual tickets
+└── learnings/
+    └── LEARNINGS.jsonl         ← Append-only log: root causes, fixes, watch-fors
 ```
+
+**Two layers of memory:**
+- **Tickets** (`.claude/Bugs-to-Fix/`) — active work items, resolved when done
+- **Learnings** (`.claude/learnings/LEARNINGS.jsonl`) — permanent record of what was learned; survives ticket closure; builds judgment over time
 
 **Examples:**
 ```
@@ -167,9 +173,28 @@ Claude will read the ticket, load the session context if needed, and resume work
 
 ---
 
+## Learnings Log
+
+When you resolve a ticket, append an entry to `.claude/learnings/LEARNINGS.jsonl`:
+
+```json
+{"date": "2026-02-26", "session": "[SESSION_ID]", "what": "ARCH-BUG-001 — instruction skipped under implement directive", "decision_or_fix": "Moved hard stop to top of CLAUDE.md", "rationale": "Position matters — Claude skips middle-of-file instructions when given direct action commands", "watch_for": "Any instruction that requires reading before acting — always position at top", "tags": ["ARCH", "CLAUDE.md", "bug"]}
+```
+
+**Why JSONL not markdown:**
+- Append-only — each line is a self-contained record, nothing can corrupt previous entries
+- Schema-first — the first line defines the structure, agents always know what they're reading
+- Queryable — grep or jq to find patterns across all resolved tickets
+- Persists after tickets are deleted or archived — the learnings outlive the work
+
+**To synthesize patterns:** Ask Claude: *"Read .claude/learnings/LEARNINGS.jsonl and summarize recurring root causes, fixes, and watch-fors."*
+
+---
+
 ## Tips
 
 - **File tickets mid-conversation** — don't wait. If something comes up, file it immediately before context is lost.
 - **Capture your words verbatim** — the Problem/Idea field should sound like you, not like a ticket system. Future Claude reads this cold.
 - **Keep tickets open until done** — don't delete them, update the Status field.
 - **One issue per ticket** — if a bug reveals a second issue, file a second ticket.
+- **Log the learning when you close the ticket** — the two-minute write-up compounds across sessions.

@@ -58,6 +58,10 @@ Follow Phase 1-4. NO fixes until root cause identified.
 - [ ] Fix implemented
 - [ ] Verified working
 - [ ] Status updated to DONE
+- [ ] Learning logged → append to `.claude/learnings/LEARNINGS.jsonl`:
+  ```json
+  {"date": "YYYY-MM-DD", "session": "[SESSION_ID]", "what": "[ticket ID + title]", "decision_or_fix": "[what fixed it]", "rationale": "[why root cause + why this fix]", "watch_for": "[failure mode to watch for]", "tags": ["[PREFIX]", "bug"]}
+  ```
 
 ### For project categories (customize these):
 

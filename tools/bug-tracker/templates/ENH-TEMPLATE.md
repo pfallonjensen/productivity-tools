@@ -70,6 +70,10 @@ For multi-step implementations.
 - [ ] Implemented
 - [ ] Verified working
 - [ ] Status updated to DONE
+- [ ] Learning logged → append to `.claude/learnings/LEARNINGS.jsonl`:
+  ```json
+  {"date": "YYYY-MM-DD", "session": "[SESSION_ID]", "what": "[ticket ID + title]", "decision_or_fix": "[what was built]", "rationale": "[why this approach over alternatives]", "watch_for": "[failure modes, edge cases]", "tags": ["[PREFIX]", "enh"]}
+  ```
 
 ### For project categories (customize these):
 
