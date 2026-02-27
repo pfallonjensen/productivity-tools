@@ -1,1 +1,1 @@
-{"_schema": "learning", "_version": "1.0", "_domain": "bugs", "_description": "Resolved ticket learnings — root causes, fixes applied, patterns to watch for in future sessions"}
+{"_schema":"learning","_version":"2.0","_domain":"project","_description":"Resolved ticket learnings — root causes, fixes applied, patterns to watch for in future sessions. Tags are REQUIRED — use only tags from _tags_vocabulary. Add new tags to vocabulary first.","_tags_vocabulary":["bug","enhancement","architecture","skills","automation","hooks","memory","critical","workaround"]}

@@ -69,6 +69,15 @@ your-project/
 - Tickets are ephemeral — they close when resolved
 - Learnings are permanent — every resolved ticket appends a record of root cause, fix, and what to watch for. Future Claude sessions read this and skip rediscovering patterns you've already seen.
 
+**Learnings format (v2):** Each JSONL file has a schema line (line 1) with a `_tags_vocabulary` array. Tags are required on every entry and must come from this vocabulary. To add a new tag, update the vocabulary in line 1 first.
+
+```json
+{"_schema":"learning","_version":"2.0","_domain":"project","_tags_vocabulary":["bug","enhancement","architecture"]}
+{"date":"2026-02-26","session":"abc123","what":"Title","decision_or_fix":"What was done","rationale":"Why","watch_for":["Gotcha"],"tags":["bug","architecture"]}
+```
+
+**For multi-project setups:** Create one JSONL per domain instead of one global file. Load only the relevant domain's learnings per session. Cross-domain patterns go in a separate `PATTERNS.md` file.
+
 ---
 
 ## CLAUDE.md Snippet
