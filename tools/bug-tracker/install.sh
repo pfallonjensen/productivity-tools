@@ -69,15 +69,61 @@ if [[ "$MODE" == "install" ]]; then
         fi
     done
 
-    # Download LEARNINGS.jsonl schema to .claude/learnings/
-    LEARNINGS_FILE="$PROJECT_ROOT/.claude/learnings/LEARNINGS.jsonl"
-    if [[ ! -f "$LEARNINGS_FILE" ]]; then
+    # Set up domain-based learnings (v2)
+    LEARNINGS_DIR="$PROJECT_ROOT/.claude/learnings"
+    echo ""
+    echo "Setting up learnings system (domain-based, v2)..."
+    echo "  Each domain gets its own JSONL file with a tags vocabulary."
+    echo "  Default domain: 'project' (general-purpose, covers most single-project setups)."
+    echo ""
+    read -r -p "Add extra domains? (comma-separated, e.g. frontend,backend,devops) [none] " EXTRA_DOMAINS
+    EXTRA_DOMAINS="${EXTRA_DOMAINS:-}"
+
+    # Always create the default 'project' domain
+    DEFAULT_LEARNINGS="$LEARNINGS_DIR/project.jsonl"
+    if [[ ! -f "$DEFAULT_LEARNINGS" ]]; then
         if [[ "$DRY_RUN" == false ]]; then
-            curl -fsSL "$REPO_BASE/templates/LEARNINGS.jsonl" -o "$LEARNINGS_FILE"
+            echo '{"_schema":"learning","_version":"2.0","_domain":"project","_description":"Resolved ticket learnings — root causes, fixes applied, patterns to watch for in future sessions. Tags are REQUIRED — use only tags from _tags_vocabulary. Add new tags to vocabulary first.","_tags_vocabulary":["bug","enhancement","architecture","skills","automation","hooks","memory","critical","workaround"]}' > "$DEFAULT_LEARNINGS"
         fi
-        log_info "Downloaded LEARNINGS.jsonl (schema seed)"
+        log_info "Created project.jsonl (default domain)"
     else
-        log_warn "LEARNINGS.jsonl already exists, skipping"
+        log_warn "project.jsonl already exists, skipping"
+    fi
+
+    # Create extra domain files if requested
+    if [[ -n "$EXTRA_DOMAINS" ]]; then
+        IFS=',' read -ra DOMAINS <<< "$EXTRA_DOMAINS"
+        for domain in "${DOMAINS[@]}"; do
+            domain=$(echo "$domain" | xargs)  # trim whitespace
+            DOMAIN_FILE="$LEARNINGS_DIR/$domain.jsonl"
+            if [[ ! -f "$DOMAIN_FILE" ]]; then
+                if [[ "$DRY_RUN" == false ]]; then
+                    echo "{\"_schema\":\"learning\",\"_version\":\"2.0\",\"_domain\":\"$domain\",\"_description\":\"Learnings for $domain domain. Tags are REQUIRED.\",\"_tags_vocabulary\":[\"bug\",\"enhancement\",\"architecture\"]}" > "$DOMAIN_FILE"
+                fi
+                log_info "Created $domain.jsonl"
+            else
+                log_warn "$domain.jsonl already exists, skipping"
+            fi
+        done
+    fi
+
+    # Create PATTERNS.md for cross-domain synthesis
+    PATTERNS_FILE="$LEARNINGS_DIR/PATTERNS.md"
+    if [[ ! -f "$PATTERNS_FILE" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            cat > "$PATTERNS_FILE" << 'PATTERNS_EOF'
+# Learnings Patterns
+
+Synthesized from `~/.claude/learnings/*.jsonl`. Recurring themes, failure modes, and high-value watch-fors.
+
+**To refresh:** Say *"Read ~/.claude/learnings/*.jsonl and update PATTERNS.md with recurring themes."*
+
+**Last synthesized:** —
+PATTERNS_EOF
+        fi
+        log_info "Created PATTERNS.md (cross-domain synthesis)"
+    else
+        log_warn "PATTERNS.md already exists, skipping"
     fi
 
     # Step 3: Install skills (optional)
